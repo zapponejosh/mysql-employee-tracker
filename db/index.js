@@ -114,7 +114,7 @@ class DB {
                 employees.last_name AS "Last Name",
                 roles.title AS Role,
                 roles.salary AS Salary,
-                department.name AS Department,
+                department.name AS Department
             FROM 
                 employees
             LEFT JOIN 

@@ -2,50 +2,6 @@
 const db = require('./db');
 const inquirer = require('inquirer');
 
-// special cases to dynamilcally generate choices for certain queries
-// by Department
-async function getDepartments() {
-    const arr = [];
-    const departments = await db.viewDepartments()
-    departments.forEach(dep => {
-        arr.push(dep.Departments)
-    });
-    return arr;
-}
-
-async function byDepartmentPrompt() {
-    const depList = await getDepartments();
-    const { result } = await inquirer.prompt({
-        type: 'list',
-        message: 'Which departments employee\'s would you like to view?',
-        name: 'result',
-        choices: [...depList, "done"]
-    });
-    return result;
-}
-
-// by manager 
-async function getManagers() {
-    const arr = [];
-    const managers = await db.viewManagers()
-    managers.forEach(dep => {
-        arr.push(dep.Manager)
-    });
-    return arr;
-}
-
-async function byManagerPrompt() {
-    const depList = await getManagers();
-    const { result } = await inquirer.prompt({
-        type: 'list',
-        message: 'Which manager\'s employees would you like to view?',
-        name: 'result',
-        choices: [...depList, "done"]
-    });
-    return result;
-}
-
-
 //main prompts 
 
 const prompts = {
@@ -61,11 +17,52 @@ const prompts = {
                 'View all departments',
                 'View employees of a specific department',
                 'View employees of a specific manager',
-                'Quit',
+                'View department budget',
+                'Add employee',
+                'Add role',
+                'Add department',
+                'Update employee role',
+                'Update employee manager',
+                'Fire employee',
+                'Outsource department',
+                'Retire role',
+                'Quit'
             ]
           }
     ],
+    byDep: [
+        {
+        type: 'list',
+        message: 'Which departments employee\'s would you like to view?',
+        name: 'dep',
+        choices: (async() => {
+            const arr = [];
+            const departments = await db.viewDepartments()
+            departments.forEach(dep => {
+                arr.push(dep.Departments)
+            });
+            arr.push("done");
+            return arr;
+        })
+        }
+    ],
+    byMan: [
+        {
+            type: 'list',
+            message: 'Which departments employee\'s would you like to view?',
+            name: 'man',
+            choices: (async() => {
+                const arr = [];
+                const managers = await db.viewManagers()
+                managers.forEach(dep => {
+                    arr.push(dep.Manager)
+                });
+                arr.push("done");
+                return arr;
+            }) 
+        }
+    ]
     
 }
 
-module.exports = { byDepartmentPrompt, byManagerPrompt, prompts}
+module.exports = { prompts}

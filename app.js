@@ -1,7 +1,7 @@
 // here is my main js central command
 // import inquirer, asciiart, prompts, db (this grabs the index.js from db dir), console.table
 const inquirer = require('inquirer');
-const { byDepartmentPrompt, byManagerPrompt, prompts} = require('./prompts');
+const {prompts} = require('./prompts');
 const db = require('./db');
 require('console.table')
 
@@ -29,35 +29,38 @@ async function viewRoles() {
 }
 
 
-async function viewByDepartment() {
-    let department = await byDepartmentPrompt(); 
+async function viewByDepartment(department) {
+    // let department = await byDepartmentPrompt(); 
     const employees = await db.viewByDepartment(department)
 
     if (department === "done") {
         mainPrompt();
     } else if (employees.length === 0) {
         console.log(`There are no employees in ${department}.\n`);
-        viewByDepartment();
+        const { dep } = await inquirer.prompt(prompts.byDep);
+        viewByDepartment(dep);
     } else {
         console.log('\n');
         console.table(employees);
-        viewByDepartment();
+        const { dep } = await inquirer.prompt(prompts.byDep);
+        viewByDepartment(dep);
     } 
 }
 
-async function viewByManager() {
-    let manager = await byManagerPrompt(); 
+async function viewByManager(manager) {
     const employees = await db.viewByManager(manager)
-
+    console.log(manager)
     if (manager === "done") {
         mainPrompt();
     } else if (employees.length === 0) {
         console.log(`${manager} manages no employees.\n`);
-        viewByManager();
+        const { man } = await inquirer.prompt(prompts.byMan);
+        viewByManager(man);
     } else {
         console.log('\n');
         console.table(employees);
-        viewByManager();
+        const { man } = await inquirer.prompt(prompts.byMan);
+        viewByManager(man);
     } 
 }
 
@@ -75,10 +78,12 @@ async function mainPrompt() {
             viewDepartments();
             break;
         case 'View employees of a specific department':
-            viewByDepartment();
+            const { dep } = await inquirer.prompt(prompts.byDep);
+            viewByDepartment(dep);
             break;
         case 'View employees of a specific manager':
-            viewByManager();
+            const { man } = await inquirer.prompt(prompts.byMan);
+            viewByManager(man);
             break;
         default:
             console.log('Goodbye!')
