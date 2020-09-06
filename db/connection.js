@@ -13,12 +13,14 @@ const connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
+    // check connection
     if (err) {
         console.error("error connecting: " + err.stack);
         return;
       }
     
-      console.log("connected as id " + connection.threadId);
+    //check during install
+     //console.log("connected as id " + connection.threadId);
 });
 
 // promisify my queries

@@ -17,6 +17,7 @@ class DB {
                 employees.first_name AS "First Name",
                 employees.last_name AS "Last Name",
                 roles.title AS Role,
+                roles.salary AS Salary,
                 department.name AS Department,
                 CONCAT(m.first_name, ' ', m.last_name) AS Manager
             FROM 
@@ -62,7 +63,74 @@ class DB {
         )
     }
     // viewAllEmployeesByDepartment
+    viewByDepartment(department) {
+        return this.connection.query(
+            `
+            SELECT
+                employees.id,
+                employees.first_name AS "First Name",
+                employees.last_name AS "Last Name",
+                roles.title AS Role,
+                roles.salary AS Salary,
+                department.name AS Department,
+                CONCAT(m.first_name, ' ', m.last_name) AS Manager
+            FROM 
+                employees
+            LEFT JOIN 
+                roles 
+                ON employees.role_id = roles.id
+            LEFT JOIN
+                department
+                ON roles.department_id = department.id
+            LEFT JOIN
+                employees m
+                ON employees.manager_id = m.id
+            WHERE department.name = '${department}';
+            `
+        )
+    }
+
+    // viewManagers
+    viewManagers() {
+        return this.connection.query(
+            `
+            SELECT
+                CONCAT(employees.first_name, ' ', employees.last_name) AS Manager
+            FROM 
+                employees 
+            WHERE 
+                manager_id IS NULL
+            `
+        )
+    }
+
     // viewAllEmployeesByManager
+    viewByManager(manager) {
+        return this.connection.query(
+            `
+            SELECT
+                employees.id,
+                employees.first_name AS "First Name",
+                employees.last_name AS "Last Name",
+                roles.title AS Role,
+                roles.salary AS Salary,
+                department.name AS Department,
+            FROM 
+                employees
+            LEFT JOIN 
+                roles 
+                ON employees.role_id = roles.id
+            LEFT JOIN
+                department
+                ON roles.department_id = department.id
+            LEFT JOIN
+                employees m
+                ON employees.manager_id = m.id
+            WHERE  CONCAT(m.first_name, ' ', m.last_name) = "${manager}";
+            `
+        )
+    }
+
     // viewDepartmentBudgets
 
     // addEmployee
@@ -77,20 +145,17 @@ class DB {
     // removeRole
 
     
-    
-  
-
 }
 
 // testing queries
-let test = new DB(connection)
+// let test = new DB(connection)
 
-async function testMe() {
-    const employees = await test.viewDepartments()
-    console.log(employees)
-}
+// async function testMe() {
+//     const employees = await test.viewByDepartment('admin')
+//     console.log(employees)
+// }
 
-testMe()
+// testMe()
 
 
 module.exports = new DB(connection)
