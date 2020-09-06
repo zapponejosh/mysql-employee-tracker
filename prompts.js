@@ -54,13 +54,52 @@ const prompts = {
             choices: (async() => {
                 const arr = [];
                 const managers = await db.viewManagers()
-                managers.forEach(dep => {
-                    arr.push(dep.Manager)
+                managers.forEach(man => {
+                    arr.push(man.Manager)
                 });
                 arr.push("done");
                 return arr;
             }) 
         }
+    ],
+    addEmployee: [
+        {
+            type: 'input',
+            message: "Enter first name: ",
+            name: "firstName"
+        },
+        {
+            type: 'input',
+            message: "Enter last name: ",
+            name: "lastName"
+        },
+        {
+            type: 'list',
+            message: 'What is this employee\'s role?',
+            name: 'role',
+            choices: (async() => {
+                const arr = [];
+                const roles = await db.viewRoles()
+                roles.forEach(role => {
+                    arr.push(role.Role)
+                });
+                return arr;
+            }) 
+        },
+        {
+            type: 'list',
+            message: 'Who is this employee\'s manager?',
+            name: 'manager',
+            choices: (async() => {
+                const arr = [];
+                const managers = await db.viewManagers()
+                managers.forEach(man => {
+                    arr.push(man.Manager)
+                });
+                arr.push('This is a new manager')
+                return arr;
+            }) 
+        },
     ]
     
 }

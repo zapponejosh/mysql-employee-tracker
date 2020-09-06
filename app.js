@@ -64,6 +64,19 @@ async function viewByManager(manager) {
     } 
 }
 
+async function createEmployee(newEmployee) {
+    let details = Object.values(newEmployee).filter(val => val !== 'This is a new manager');
+    //change manager name for ID
+    if (details.length === 4) {
+        managerId = await db.findManagerId(details[3]);
+        details[3] = managerId[0].id;
+    }
+    // change role title to role ID
+    let roleId = await db.findRoleId(details[2]);
+    details[2] = roleId[0].id;
+    await db.addEmployee(details);
+    mainPrompt();
+}
 
 async function mainPrompt() {
     const { choice} = await inquirer.prompt(prompts.mainPrompt);
@@ -84,6 +97,10 @@ async function mainPrompt() {
         case 'View employees of a specific manager':
             const { man } = await inquirer.prompt(prompts.byMan);
             viewByManager(man);
+            break;
+        case 'Add employee':
+            const newEmployee = await inquirer.prompt(prompts.addEmployee)
+            createEmployee(newEmployee)
             break;
         default:
             console.log('Goodbye!')

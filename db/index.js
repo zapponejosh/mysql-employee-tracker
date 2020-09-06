@@ -39,6 +39,7 @@ class DB {
         return this.connection.query(
             `
             SELECT
+                roles.id,
                 roles.title AS Role,
                 roles.salary,
                 department.name AS Department
@@ -134,6 +135,61 @@ class DB {
     // viewDepartmentBudgets
 
     // addEmployee
+    addEmployee(details) {
+        // manager
+        if (details.length === 3) {
+            return this.connection.query(
+                `INSERT INTO 
+                    employees (first_name, last_name, role_id) 
+                VALUES (?, ?, ?)`,
+                (details), 
+                function(err, result) {
+                    if (err) {
+                      throw err;
+                    }
+                    return;
+                }
+            )    
+        } else {
+            return this.connection.query(
+                `INSERT INTO 
+                    employees (first_name, last_name, role_id, manager_id) 
+                VALUES (?, ?, ?, ?)`,
+                (details), 
+                function(err, result) {
+                    if (err) {
+                      throw err;
+                    }
+                    return;
+                }
+            )    
+        }
+        
+    }
+
+    findRoleId(roleName) {
+        return this.connection.query(
+            `
+            SELECT 
+                roles.id
+            FROM 
+                roles
+            WHERE roles.title = '${roleName}'
+            `
+        )
+    }
+
+    findManagerId(manager) {
+        return this.connection.query(
+            `
+            SELECT 
+                employees.id
+            FROM 
+                employees
+            WHERE  CONCAT(employees.first_name, ' ', employees.last_name) = "${manager}";
+            `
+        )
+    }
     // addRole
     // addDepartment
 
