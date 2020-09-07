@@ -299,7 +299,28 @@ class DB {
     }
 
     // removeDepartment
+    queryRemoveDep(depId) {
+        return this.connection.query(
+            `
+            DELETE FROM 
+                department
+            WHERE 
+                department.id = ${depId}
+
+            `
+        )
+    }
     // removeRole
+    queryRemoveRole(roleId) {
+        return this.connection.query(
+            `
+            DELETE FROM 
+                roles
+            WHERE 
+                roles.id = ${roleId}
+            `
+        )
+    }
 
 
 

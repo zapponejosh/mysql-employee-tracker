@@ -27,8 +27,8 @@ module.exports = {
                 'Update employee manager',
                 new inquirer.Separator(),
                 'Fire employee',
-                'Outsource department',
-                'Retire role',
+                'Outsource role',
+                'Downsize. Outsource department',
                 'Quit',
                 new inquirer.Separator(),
             ]
@@ -45,7 +45,7 @@ module.exports = {
             departments.forEach(dep => {
                 arr.push(dep.Departments)
             });
-            arr.push("done");
+            arr.push("Done");
             return arr;
         })
         }
@@ -236,7 +236,7 @@ module.exports = {
     pickDepartment: [
         {
             type: 'list',
-            message: 'Which department\'s employees would you like to view?',
+            message: 'Which department\'s budget would you like to view?',
             name: 'chosenDepartment',
             choices: (async() => {
                 const arr = [];
@@ -244,6 +244,7 @@ module.exports = {
                 departments.forEach(dep => {
                     arr.push(dep.Departments)
                 });
+                arr.push("Done");
                 return arr;
             })
             }
@@ -344,6 +345,43 @@ module.exports = {
                 return response[0].id;
             }) 
         }
+    ],
+    removeRole: [
+        {
+            type: 'list',
+            message: 'Which role are you outsourcing? (all employees will be let go.)',
+            name: 'outsourcedRole',
+            choices: (async() => {
+                const arr = [];
+                const roles = await db.viewRoles()
+                roles.forEach(role => {
+                    arr.push(role.Role)
+                });
+                return arr;
+            }),
+            filter: (async(val) => {
+                let response = await db.findRoleId(val);
+                return response[0].id;
+            })
+        },
+    ],
+    removeDep: [
+        {
+            type: 'list',
+            message: 'Which department are you outsourcing? (all associated roles and employees will be let go.)',
+            name: 'outsourcedDep',
+            choices: (async() => {
+                const arr = [];
+                const deps = await db.viewDepartments()
+                deps.forEach(dep => {
+                    arr.push(dep.Departments)
+                });
+                return arr;
+            }),
+            filter: (async(val) => {
+                let response = await db.findDepartmentId(val);
+                return response[0].id;
+            })
+        },
     ]
-    
 }
