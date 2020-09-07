@@ -49,7 +49,7 @@ class DB {
                 department
                 ON roles.department_id = department.id
             ORDER BY
-                salary DESC
+                department.name
             `
         )
     }
@@ -100,7 +100,7 @@ class DB {
             FROM 
                 employees 
             WHERE 
-                manager_id IS NULL
+                manager_id IS NULL OR role_id IN (1,2)
             `
         )
     }
@@ -127,7 +127,7 @@ class DB {
             LEFT JOIN
                 employees m
                 ON employees.manager_id = m.id
-            WHERE  CONCAT(m.first_name, ' ', m.last_name) = "${manager}";
+            WHERE  CONCAT(m.first_name, ' ', m.last_name) = "${manager}" OR m.id = "${manager}"
             `
         )
     }
@@ -136,35 +136,23 @@ class DB {
 
     // addEmployee
     addEmployee(details) {
+        let sql; 
         // manager
         if (details.length === 3) {
-            return this.connection.query(
-                `INSERT INTO 
+            sql = `INSERT INTO 
                     employees (first_name, last_name, role_id) 
-                VALUES (?, ?, ?)`,
-                (details), 
-                function(err, result) {
-                    if (err) {
-                      throw err;
-                    }
-                    return;
-                }
-            )    
+                VALUES (?, ?, ?)`
+            // not a manager 
         } else {
-            return this.connection.query(
-                `INSERT INTO 
+            sql = `INSERT INTO 
                     employees (first_name, last_name, role_id, manager_id) 
-                VALUES (?, ?, ?, ?)`,
-                (details), 
-                function(err, result) {
-                    if (err) {
-                      throw err;
-                    }
-                    return;
-                }
-            )    
+                VALUES (?, ?, ?, ?)`
         }
-        
+
+        return this.connection.query(
+            sql,
+            (details)
+        )    
     }
 
     findRoleId(roleName) {
@@ -190,15 +178,130 @@ class DB {
             `
         )
     }
-    // addRole
-    // addDepartment
 
+    findDepartmentId(department) {
+        return this.connection.query(
+            `
+            SELECT
+                department.id
+            FROM
+                department
+            WHERE department.name = "${department}"
+            `
+        )
+    }
+    // addRole
+    addRole(details) {
+        return this.connection.query(
+            `
+            INSERT INTO 
+                roles (title, salary, department_id)
+            VALUES 
+                (?, ?, ?);
+            `,
+            (details)
+        )    
+    }
+    // addDepartment
+    addDepartment(name) {
+        return this.connection.query(
+            `
+            INSERT INTO
+                department (name)
+            VALUES
+                (?)
+            `
+        , [name]
+        )
+    }
+
+    findEmployeeId(name) {
+        return this.connection.query(
+            `
+            SELECT 
+                employees.id
+            FROM 
+                employees
+            WHERE
+                CONCAT(employees.first_name, ' ', employees.last_name) = "${name}"
+            `
+        )
+    }
     // updateRole
+    updateRole(empId, roleId) {
+        return this.connection.query(
+            `
+            UPDATE 
+                employees 
+            SET 
+                employees.role_id = ?
+            WHERE
+                employees.id = ?
+            `
+            , [roleId, empId]
+        )
+    }
+
+
+    // return employee ids of employees of manager
+    getSubIds(manId) {
+        return this.connection.query(
+            `
+            SELECT 
+                employees.id
+            FROM 
+                employees
+            WHERE
+                employees.manager_id = ${manId}
+            `
+        )
+    }
+
     // updateEmployeeManager
+    findManagerId(name) {
+        return this.connection.query(
+            `
+            SELECT
+                employees.id
+            FROM 
+                employees 
+            WHERE 
+                CONCAT(employees.first_name, ' ', employees.last_name) = "${name}"
+            `
+        )
+    }
+
+    queryUpdateManager(employeeId, managerId) {
+        return this.connection.query(
+            `
+            UPDATE employees 
+            SET 
+                employees.manager_id = ?
+            WHERE
+                employees.id = ?
+            `
+            , [managerId, employeeId]
+        )
+    }
 
     // removeEmployee
+    queryRemoveEmployee(employeeId) {
+        return this.connection.query(
+            `
+            DELETE FROM 
+                employees
+            WHERE
+                employees.id = ?
+
+            `
+            , [employeeId]
+        )
+    }
+
     // removeDepartment
     // removeRole
+
+
 
     
 }
