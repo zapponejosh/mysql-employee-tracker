@@ -31,7 +31,7 @@ async function viewByDepartment(department) {
     // let department = await byDepartmentPrompt(); 
     const employees = await db.viewByDepartment(department)
 
-    if (department === "done") {
+    if (department === "Done") {
         return;
     } else if (employees.length === 0) {
         console.log(`There are no employees in ${department}.\n`);
@@ -138,7 +138,6 @@ async function fireEmployee(id) {
         let teamIds = team.reduce((newArray, employee)=> {
             return newArray.concat(employee.id)
         }, [])
-        console.log(teamIds)
         const { reassign } = await inquirer.prompt(prompts.reassignManager)
         console.log(reassign)
         teamIds.forEach(empId => {
