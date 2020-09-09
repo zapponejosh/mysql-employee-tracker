@@ -13,11 +13,16 @@ A Node and MySQL CLI to track employees, roles, and departments for your busines
 * Inquirer
 
 ## Preview
+
+[See the video demo here](https://drive.google.com/file/d/1PV7qqfgcX4QFyHdGPUG0N_b8Mzx_KpG3/view?usp=sharing)
+
 ![screenshot](demo/img1.png)
 
 ![screenshot](demo/img2.png)
 
 ![screenshot](demo/img3.png)
+
+![screenshot](demo/tracker-demo.gif)
 
 
 ## Installation and Usage

@@ -48,7 +48,7 @@ async function viewByDepartment(department) {
 async function viewByManager(manager) {
     const employees = await db.viewByManager(manager)
     console.log(manager)
-    if (manager === "done") {
+    if (manager === "Done") {
         return;
     } else if (employees.length === 0) {
         console.log(`${manager} manages no employees.\n`);

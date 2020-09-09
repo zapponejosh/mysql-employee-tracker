@@ -1,46 +1,46 @@
 -- departments
 INSERT INTO department (name)
-VALUES ('administration');
+VALUES ('Administration');
 
 INSERT INTO department (name)
-VALUES ('accounting');
+VALUES ('Accounting');
 
 INSERT INTO department (name)
-VALUES ('sales');
+VALUES ('Sales');
 
 INSERT INTO department (name)
-VALUES ('warehouse');
+VALUES ('Warehouse');
 
 -- ROLES
 -- admin
 INSERT INTO roles (title, salary, department_id)
-VALUES ('manager', 75000.00, 1);
+VALUES ('Manager', 75000.00, 1);
 
 INSERT INTO roles (title, salary, department_id)
-VALUES ('co-manager', 75000.00, 1);
+VALUES ('Co-manager', 75000.00, 1);
 
 INSERT INTO roles (title, salary, department_id)
-VALUES ('receptionist', 30000.00, 1);
+VALUES ('Receptionist', 30000.00, 1);
 
 -- leads
 INSERT INTO roles (title, salary, department_id)
-VALUES ('accounting lead', 50000.00, 2);
+VALUES ('Accounting lead', 50000.00, 2);
 
 INSERT INTO roles (title, salary, department_id)
-VALUES ('sales lead', 50000.00, 3);
+VALUES ('Senior sales person', 50000.00, 3);
 
 INSERT INTO roles (title, salary, department_id)
-VALUES ('warehouse lead', 50000.00, 4);
+VALUES ('Warehouse supervisor', 50000.00, 4);
 
 -- peasants
 INSERT INTO roles (title, salary, department_id)
-VALUES ('accountant', 42000.00, 2);
+VALUES ('Accountant', 42000.00, 2);
 
 INSERT INTO roles (title, salary, department_id)
-VALUES ('sales-person', 45000.00, 3);
+VALUES ('Sales person', 45000.00, 3);
 
 INSERT INTO roles (title, salary, department_id)
-VALUES ('warehouse-lackey', 40000.00, 4);
+VALUES ('Warehouse lackey', 40000.00, 4);
 
 
 -- managers

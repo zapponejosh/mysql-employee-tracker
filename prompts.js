@@ -61,7 +61,7 @@ module.exports = {
                 managers.forEach(man => {
                     arr.push(man.Manager)
                 });
-                arr.push("done");
+                arr.push("Done");
                 return arr;
             }) 
         }
