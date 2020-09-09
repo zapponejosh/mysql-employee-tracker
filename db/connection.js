@@ -1,4 +1,4 @@
-// here i create my connection to the sql server
+// create connection to the sql server
 // import mysql and util (use util to promisify the connection queries)
 'use strict';
 
