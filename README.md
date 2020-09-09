@@ -17,6 +17,8 @@ A Node and MySQL CLI to track employees, roles, and departments for your busines
 
 ![screenshot](demo/img2.png)
 
+![screenshot](demo/img3.png)
+
 
 ## Installation and Usage
 ```run npm i, setup your db and install schema and seed data in db directory```
