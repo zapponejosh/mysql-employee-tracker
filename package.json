@@ -14,5 +14,10 @@
     "figlet": "^1.5.0",
     "inquirer": "^7.3.3",
     "mysql2": "^2.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0"
   }
 }
